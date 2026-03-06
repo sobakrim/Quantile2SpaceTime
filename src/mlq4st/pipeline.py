@@ -1,6 +1,6 @@
 # pipeline.py
 """
-mlq4s pipeline
+mlq4st pipeline
 
 End-to-end framework:
   1) Fit conditional marginals Y|X via quantile regression (KNN/QRF/QRNN)
@@ -26,7 +26,7 @@ from .marginal import SitewiseMarginal
 from .st_grf import GneitingModel, simulate_gneiting_jax
 
 @dataclass
-class mlq4sConfig:
+class mlq4stConfig:
     # --- Marginal stage
     marginal_method: str = "knn"  # "knn" | "qrf" | "qrnn"
     marginal_kwargs: Optional[Dict[str, Any]] = None
@@ -54,7 +54,7 @@ class mlq4sConfig:
     nugget_default: float = 1e-8
 
 
-class mlq4sModel:
+class mlq4stModel:
     """
     Main pipeline entry-point.
 
@@ -62,7 +62,7 @@ class mlq4sModel:
     ----------
     coords : array-like, shape (n_sites, d)
         Spatial coordinates.
-    config : mlq4sConfig or None
+    config : mlq4stConfig or None
         Configuration for marginal fitting, GRF fitting, and defaults for simulation.
     """
 
@@ -70,7 +70,7 @@ class mlq4sModel:
         self,
         coords: np.ndarray,
         *,
-        config: Optional[mlq4sConfig] = None,
+        config: Optional[mlq4stConfig] = None,
         # convenience overrides (optional)
         marginal_method: Optional[str] = None,
         marginal_kwargs: Optional[Dict[str, Any]] = None,
@@ -91,7 +91,7 @@ class mlq4sModel:
         self.coords = np.asarray(coords, float)
         self.n_sites = self.coords.shape[0]
 
-        cfg = mlq4sConfig() if config is None else config
+        cfg = mlq4stConfig() if config is None else config
 
         # apply overrides (keeping it explicit and predictable)
         if marginal_method is not None:
@@ -160,7 +160,7 @@ class mlq4sModel:
     # ---------------------------------------------------------------------
     # Fit
     # ---------------------------------------------------------------------
-    def fit(self, *, X_cov: np.ndarray, Y_obs: np.ndarray, dates: Sequence[Any]) -> "mlq4sModel":
+    def fit(self, *, X_cov: np.ndarray, Y_obs: np.ndarray, dates: Sequence[Any]) -> "mlq4stModel":
         """
         Fit the full pipeline on training data.
 
