@@ -1,6 +1,6 @@
 # st_grf.py
 """
-Spatio-temporal GRF components for mlq4s.
+Spatio-temporal GRF components for mlq4st.
 """
 
 from __future__ import annotations
